@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\RegisterController;
 
 
 
@@ -11,6 +12,9 @@ use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
+//Registration routes
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
 
 // Dashboard route (this blade template)
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

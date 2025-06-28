@@ -15,10 +15,10 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'username',
         'email',
+        'phone',
         'password',
-        'phone', // Add if you want phone contact
-        'student_id', // Add if this is for students
     ];
 
     protected $hidden = [
