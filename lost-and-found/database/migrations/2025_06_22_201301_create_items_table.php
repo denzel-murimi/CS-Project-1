@@ -23,8 +23,6 @@ return new class extends Migration
             $table->enum('status', ['active', 'returned', 'claimed'])->default('active');
             $table->text('contact_info')->nullable();
             $table->string('image_path')->nullable();
-            $table->boolean('reward_offered')->default(false);
-            $table->decimal('reward_amount', 8, 2)->nullable();
             $table->timestamps();
             $table->softDeletes();
 

@@ -7,6 +7,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\ClaimController;
+
 use Illuminate\Support\Facades\Mail;
 
 
@@ -33,19 +35,44 @@ Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkReques
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])
     ->name('password.email');
 
+//Claim routes
 
+Route::middleware('auth')->group(function () {
+    Route::get('/claims/create', [ClaimController::class, 'create'])
+        ->name('claims.create');
+
+    Route::post('/claims/{item}', [ClaimController::class, 'store'])
+        ->name('claims.store');
+});
 
 
     // Dashboard route (this blade template)
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // Lost Items routes
-Route::get('/items/lost/create', [ItemController::class, 'createLost'])->name('items.lost.create');
-Route::post('/items/lost', [ItemController::class, 'storeLost'])->name('items.lost.store');
+Route::middleware('auth')->group(function () {
+    Route::get('/items/lost/create', [ItemController::class, 'createLost'])
+        ->name('items.lost.create');
+
+    Route::post('/items/lost/store', [ItemController::class, 'storeLost'])
+        ->name('items.lost.store');
+
+    Route::get('/items/search', [ItemController::class, 'search'])
+    ->name('items.search');
+
+    Route::get('/items/{item}', [ItemController::class, 'show'])
+    ->name('items.show');
+});
 
 // Found Items routes
-Route::get('/items/found/create', [ItemController::class, 'createFound'])->name('items.found.create');
-Route::post('/items/found', [ItemController::class, 'storeFound'])->name('items.found.store');
+Route::middleware('auth')->group(function () {
+    Route::get('/items/found/create', [ItemController::class, 'createFound'])
+        ->name('items.found.create');
+
+    Route::post('/items/found/store', [ItemController::class, 'storeFound'])
+        ->name('items.found.store');
+});
+
 
 // Search/Browse Items routes
 Route::get('/items/search', [ItemController::class, 'search'])->name('items.search');
