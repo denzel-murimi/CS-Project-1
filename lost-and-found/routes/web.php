@@ -5,6 +5,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+
 
 
 
@@ -15,6 +17,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 //Registration routes
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
+
+//Login routes
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Dashboard route (this blade template)
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -36,6 +43,8 @@ Route::get('/items', [ItemController::class, 'index'])->name('items.index');
 
 // If you have authentication routes
 Auth::routes();
+
+
 
 // // Home route (redirect to dashboard if authenticated)
 // Route::get('/', function () {
