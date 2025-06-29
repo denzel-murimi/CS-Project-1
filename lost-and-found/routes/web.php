@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\HomeController;
+<<<<<<< HEAD
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -47,6 +49,11 @@ Route::middleware('auth')->group(function () {
 
 
     // Dashboard route (this blade template)
+=======
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Dashboard route (this blade template)
+>>>>>>> 6d1e0bcd65568184a1d7d2b11673d9db18ace0b3
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // Lost Items routes
@@ -81,12 +88,20 @@ Route::get('/items/search', [ItemController::class, 'search'])->name('items.sear
 Route::get('/items/{item}', [ItemController::class, 'show'])->name('items.show');
 Route::get('/items', [ItemController::class, 'index'])->name('items.index');
 
-// If you have authentication routes
-Auth::routes();
 
+<<<<<<< HEAD
 
 
 // // Home route (redirect to dashboard if authenticated)
 // Route::get('/', function () {
 //     return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
 // })->name('home');
+=======
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
+>>>>>>> 6d1e0bcd65568184a1d7d2b11673d9db18ace0b3

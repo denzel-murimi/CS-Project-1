@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,11 +24,51 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <img class="h-12 w-auto" src="{{ asset('images/strathmore-logo.png') }}" alt="Strathmore University">
+=======
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
+
+        <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+        <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
+
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack('styles')
+    </head>
+    <body class="font-sans antialiased bg-gray-50">
+        <div class="min-h-screen flex flex-col">
+            @include('layouts.navigation')
+
+            @hasSection('header')
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        @yield('header')
+>>>>>>> 6d1e0bcd65568184a1d7d2b11673d9db18ace0b3
                     </div>
-                    <div class="ml-4">
-                        <h1 class="text-xl font-bold text-white">Lost & Found System</h1>
+                </header>
+            @endif
+
+            <main class="flex-grow">
+                @yield('content')
+            </main>
+
+            <footer class="bg-gray-800 text-white mt-auto">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <div class="text-center">
+                        <p>&copy; {{ date('Y') }} Strathmore University. All rights reserved.</p>
+                        <p class="text-sm text-gray-400 mt-1">Lost & Found System - Connecting the campus community</p>
                     </div>
                 </div>
+<<<<<<< HEAD
 
                 <div class="flex items-center space-x-4">
                     <div class="hidden md:block">
@@ -74,18 +115,18 @@
                     @endauth
                 </div>
             </div>
+=======
+            </footer>
+>>>>>>> 6d1e0bcd65568184a1d7d2b11673d9db18ace0b3
         </div>
-    </nav>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <!-- Flash Messages -->
-        @if(session('success'))
-            <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                <span class="block sm:inline">{{ session('success') }}</span>
-            </div>
-        @endif
+        <script>
+            // Mobile menu toggle for Alpine.js compatibility
+            document.addEventListener('alpine:init', () => {
+                // Alpine.js will handle the navigation state
+            });
 
+<<<<<<< HEAD
         @if(session('error'))
             <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                 <span class="block sm:inline">{{ session('error') }}</span>
@@ -134,16 +175,36 @@
 
         // Auto-hide flash messages after 5 seconds
         setTimeout(function() {
+=======
+            // Auto-hide flash messages
+>>>>>>> 6d1e0bcd65568184a1d7d2b11673d9db18ace0b3
             const alerts = document.querySelectorAll('[role="alert"]');
             alerts.forEach(function(alert) {
-                alert.style.opacity = '0';
                 setTimeout(function() {
-                    alert.remove();
-                }, 300);
-            });
-        }, 5000);
-    </script>
+                    alert.style.opacity = '0';
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 300);
+                }, 5000);
 
+<<<<<<< HEAD
     @stack('scripts')
 </body>
 </html>
+=======
+                const closeButton = alert.querySelector('.close-alert-button');
+                if (closeButton) {
+                    closeButton.addEventListener('click', function() {
+                        alert.style.opacity = '0';
+                        setTimeout(function() {
+                            alert.remove();
+                        }, 300);
+                    });
+                }
+            });
+        </script>
+
+        @stack('scripts')
+    </body>
+</html>
+>>>>>>> 6d1e0bcd65568184a1d7d2b11673d9db18ace0b3

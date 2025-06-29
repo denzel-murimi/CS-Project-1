@@ -1,25 +1,11 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot>
 
-@section('title', 'Dashboard - Strathmore Lost & Found')
-
-@section('content')
-<div class="px-4 py-6 sm:px-0">
-    <!-- Welcome Section -->
-    <div class="bg-white overflow-hidden shadow rounded-lg mb-6">
-        <div class="px-4 py-5 sm:p-6">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <i class="fas fa-home text-3xl text-blue-600"></i>
-                </div>
-                <div class="ml-4">
-                    <h1 class="text-2xl font-bold text-gray-900">Welcome to Lost & Found</h1>
-                    <p class="text-gray-600">Help reunite lost items with their owners across Strathmore University campus</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Quick Stats -->
+      <!-- Quick Stats -->
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-6">
         <!-- Total Lost Items -->
         <div class="bg-white overflow-hidden shadow rounded-lg">
@@ -229,4 +215,4 @@
         </div>
     </div>
 </div>
-@endsection
+</x-app-layout>
