@@ -28,9 +28,9 @@ class ItemSeeder extends Seeder
         ];
 
         $locations = [
-            'Library', 'Student Center', 'Cafeteria', 'Lecture Hall A', 
-            'Lecture Hall B', 'Computer Lab', 'Sports Complex', 'Parking Lot', 
-            'Administration Block', 'Dormitory', 'Chapel'
+            'Main Library', 'Student Center', 'Cafeteria', 'Lecture Theatre 1', 
+            'Lecture Theatre 2', 'Computer Lab', 'Sports Complex', 'Parking Lot', 
+            'Administration Block', 'Chapel'
         ];
 
         $lostItems = [

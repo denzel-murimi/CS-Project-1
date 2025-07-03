@@ -44,10 +44,10 @@ class Item extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function claims()
-    {
-        return $this->hasMany(Claim::class);
-    }
+    // public function claims()
+    // {
+    //     return $this->hasMany(Claim::class);
+    // }
 
     // Scopes
     public function scopeLost($query)

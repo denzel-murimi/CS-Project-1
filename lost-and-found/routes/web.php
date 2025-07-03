@@ -5,8 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\HomeController;
-Route::get('/', [HomeController::class, 'index'])->name('home');
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('logout');
 // Dashboard route (this blade template)
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -20,6 +24,14 @@ Route::post('/items/found', [ItemController::class, 'storeFound'])->name('items.
 
 // Search/Browse Items routes
 Route::get('/items/search', [ItemController::class, 'search'])->name('items.search');
+
+Route::get('/terms-of-service', function () {
+    return view('terms-of-service');
+})->name('terms.show');
+
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+})->name('privacy.show');
 
 // Optional: Additional routes you might need
 Route::get('/items/{item}', [ItemController::class, 'show'])->name('items.show');

@@ -31,13 +31,21 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'student_id' => ['required', 'string', 'max:50', 'unique:users,student_id'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'phone' => ['nullable', 'string', 'max:20', 'regex:/^[\+]?[0-9\s\-\(\)]+$/'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'student_id.required' => 'Student/Staff ID is required.',
+            'student_id.unique' => 'This Student/Staff ID is already registered.',
+            'phone.regex' => 'Please enter a valid phone number.',
         ]);
 
         $user = User::create([
             'name' => $request->name,
+            'student_id' => strtoupper($request->student_id), // Ensure uppercase consistency
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
         ]);
 
