@@ -27,21 +27,43 @@
     </div>
 </div>
 
-<!-- Search Section -->
-<div class="bg-white py-8 shadow-sm">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i class="fas fa-search text-gray-400"></i>
+<!-- Improved Search Bar with Flex Layout -->
+<div class="bg-white py-12 shadow-sm">
+    <div class="max-w-4xl mx-auto px-6">
+        <form action="{{ route('items.search') }}" method="GET" class="flex flex-col sm:flex-row items-center gap-4">
+            <div class="relative flex-1 w-full">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+                <input 
+                    type="text"
+                    name="query"
+                    value="{{ request('query') }}"
+                    placeholder="Search by item name, location, or description..."
+                    class="w-full pl-10 pr-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 text-base"
+                    required
+                >
             </div>
-            <input type="text" placeholder="Search for lost or found items..." 
-                class="w-full pl-10 pr-4 py-4 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg">
-            <button class="absolute right-2 top-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition duration-200">
+
+            <button 
+                type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-md transition duration-200 w-full sm:w-auto"
+            >
                 Search
             </button>
+        </form>
+
+        <!-- Optional: Quick Tags -->
+        <div class="mt-4 text-sm text-gray-500 text-center">
+            Try searching:
+            <span class="inline-block bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs mx-1">iPhone</span>
+            <span class="inline-block bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs mx-1">Backpack</span>
+            <span class="inline-block bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs mx-1">Library</span>
         </div>
     </div>
 </div>
+
+
 
 <!-- Main Content -->
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -202,22 +224,18 @@
            <p class="text-blue-100 text-lg">See how we're making a difference at Strathmore University</p>
        </div>
        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-           <div>
-               <div class="text-4xl font-bold mb-2">{{ $stats['items_reunited'] ?? 248 }}</div>
-               <div class="text-blue-100">Items Reunited</div>
-           </div>
-           <div>
-               <div class="text-4xl font-bold mb-2">{{ $stats['success_rate'] ?? '89%' }}</div>
-               <div class="text-blue-100">Success Rate</div>
-           </div>
-           <div>
-               <div class="text-4xl font-bold mb-2">{{ $stats['active_users'] ?? 1205 }}</div>
-               <div class="text-blue-100">Active Users</div>
-           </div>
-           <div>
-               <div class="text-4xl font-bold mb-2">{{ $stats['pending_items'] ?? 38 }}</div>
-               <div class="text-blue-100">Pending Items</div>
-           </div>
+           <div class="text-4xl font-bold mb-2">{{ $stats['items_reunited'] }}</div>
+<div class="text-blue-100">Items Reunited</div>
+
+<div class="text-4xl font-bold mb-2">{{ $stats['success_rate'] }}</div>
+<div class="text-blue-100">Success Rate</div>
+
+<div class="text-4xl font-bold mb-2">{{ $stats['active_users'] }}</div>
+<div class="text-blue-100">Active Users</div>
+
+<div class="text-4xl font-bold mb-2">{{ $stats['pending_items'] }}</div>
+<div class="text-blue-100">Pending Items</div>
+
        </div>
    </div>
 </div>
