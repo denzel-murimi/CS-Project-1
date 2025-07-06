@@ -55,6 +55,14 @@
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
             Register
         </button>
+
+        <!-- Login Link - ADD THIS SECTION -->
+        <p class="mt-4 text-sm text-gray-600">
+            Already have an account?
+            <a href="{{ route('login') }}" class="text-blue-600 hover:underline">
+                Login here
+            </a>
+        </p>
     </form>
 </div>
 @endsection

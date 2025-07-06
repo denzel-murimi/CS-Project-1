@@ -15,14 +15,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 flex flex-col min-h-screen">
     <!-- Navigation -->
     <nav class="bg-blue-800 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <img class="h-12 w-auto" src="{{ asset('images/strathmore-logo.png') }}" alt="Strathmore University">
+                        <img class="h-25 w-auto" src="{{ asset('images/strathmore-logo.png') }}" alt="Strathmore University">
                     </div>
                     <div class="ml-4">
                         <h1 class="text-xl font-bold text-white">Lost & Found System</h1>
@@ -78,7 +78,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <main class="flex-1 max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 w-full">
         <!-- Flash Messages -->
         @if(session('success'))
             <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -106,7 +106,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white mt-auto">
+    <footer class="bg-gray-800 text-white">
         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <p>&copy; {{ date('Y') }} Strathmore University. All rights reserved.</p>

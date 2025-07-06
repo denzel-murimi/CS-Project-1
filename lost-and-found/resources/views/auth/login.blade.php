@@ -32,6 +32,14 @@
                 Forgot Your Password?
             </a>
         </p>
+
+        <!-- Register Link - ADD THIS SECTION -->
+        <p class="mt-4 text-sm text-gray-600">
+            Not a member?
+            <a href="{{ route('register') }}" class="text-blue-600 hover:underline">
+                Register here
+            </a>
+        </p>
     </form>
 </div>
 @endsection
