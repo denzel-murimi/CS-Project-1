@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\ClaimController;
+use App\Http\Controllers\ProfileController;
 
 use Illuminate\Support\Facades\Mail;
 
@@ -81,8 +82,14 @@ Route::get('/items/search', [ItemController::class, 'search'])->name('items.sear
 Route::get('/items/{item}', [ItemController::class, 'show'])->name('items.show');
 Route::get('/items', [ItemController::class, 'index'])->name('items.index');
 
+
+// Profile Routes
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 // If you have authentication routes
-Auth::routes();
+//Auth::routes();
 
 
 

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// Add this relationship to your existing User model
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
