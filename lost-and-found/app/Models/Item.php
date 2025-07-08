@@ -137,4 +137,10 @@ class Item extends Model
     {
         $this->update(['status' => 'claimed']);
     }
+
+    public function deletionRequest()
+    {
+    return $this->hasOne(\App\Models\FoundItemDeletionRequest::class);
+    }
+
 }
