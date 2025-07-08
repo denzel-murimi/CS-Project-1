@@ -18,6 +18,7 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+        'is_admin',
     ];
 
     protected $hidden = [
@@ -44,4 +45,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Item::class)->where('type', 'found');
     }
+
+    public function isAdmin()
+{
+    return $this->is_admin;
+}
+
 }

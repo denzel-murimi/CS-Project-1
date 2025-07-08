@@ -72,6 +72,12 @@
                         <a href="{{ route('login') }}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
                         <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-md text-sm font-medium">Register</a>
                     @endauth
+
+                    @auth
+                        @if(auth()->user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}" class="text-white">Admin Panel</a>
+                        @endif
+                    @endauth
                 </div>
             </div>
         </div>

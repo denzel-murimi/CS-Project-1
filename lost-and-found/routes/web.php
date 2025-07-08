@@ -9,6 +9,11 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminItemController;
+use App\Http\Controllers\Admin\AdminClaimController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminReportController;
 
 use Illuminate\Support\Facades\Mail;
 
@@ -87,6 +92,23 @@ Route::get('/items', [ItemController::class, 'index'])->name('items.index');
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+// Admin Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/items', [AdminItemController::class, 'index'])->name('admin.items.index');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/claims', [AdminClaimController::class, 'index'])->name('admin.claims.index');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/reports', [AdminReportController::class, 'index'])->name('admin.reports.index');
+});
 
 // If you have authentication routes
 //Auth::routes();
