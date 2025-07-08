@@ -23,6 +23,7 @@ class Item extends Model
         'image_path',
         'reward_offered',
         'reward_amount',
+        'unique_identifiers',
     ];
 
     protected $dates = [

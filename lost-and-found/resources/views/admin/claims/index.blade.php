@@ -191,8 +191,12 @@
                                     {{ $claim->created_at->format('M d, Y') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    @if ($claim->status === 'pending')
-                                        <div class="flex space-x-2">
+                                    <div class="flex space-x-2">
+                                        <a href="{{ route('admin.claims.show', $claim->id) }}"
+                                           class="inline-flex items-center px-3 py-2 border border-gray-300 text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            View
+                                        </a>
+                                        @if ($claim->status === 'pending')
                                             <form action="{{ route('admin.claims.update', $claim->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('PATCH')
@@ -209,10 +213,10 @@
                                                     Reject
                                                 </button>
                                             </form>
-                                        </div>
-                                    @else
-                                        <span class="text-gray-500">{{ ucfirst($claim->status) }}</span>
-                                    @endif
+                                        @else
+                                            <span class="text-gray-500">{{ ucfirst($claim->status) }}</span>
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

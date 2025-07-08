@@ -93,21 +93,21 @@ class ItemController extends Controller
     }
 
     public function createFound(Request $request)
-{
-    $categories = $this->getCategories();
-    $locations = $this->getLocations();
+    {
+        $categories = $this->getCategories();
+        $locations = $this->getLocations();
 
-    $prefill = null;
+        $prefill = null;
 
-    if ($request->has('from_lost')) {
-        $lostItem = Item::find($request->from_lost);
+        if ($request->has('from_lost')) {
+            $lostItem = Item::find($request->from_lost);
 
-        if ($lostItem && $lostItem->isLost()) {
-            $prefill = $lostItem;
+            if ($lostItem && $lostItem->isLost()) {
+                $prefill = $lostItem;
+            }
         }
-    }
 
-    return view('items.create-found', compact('categories', 'locations', 'prefill'));
+        return view('items.create-found', compact('categories', 'locations', 'prefill'));
     }
 
     public function storeLost(Request $request)
@@ -120,6 +120,7 @@ class ItemController extends Controller
             'date_lost_found' => 'required|date|before_or_equal:today',
             'contact_info' => 'nullable|string|max:500',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'unique_identifiers' => 'nullable|string',
         ]);
 
         $validated['user_id'] = Auth::id();
@@ -129,6 +130,8 @@ class ItemController extends Controller
         if ($request->hasFile('image')) {
             $validated['image_path'] = $request->file('image')->store('items', 'public');
         }
+
+        $validated['unique_identifiers'] = $request->input('unique_identifiers');
 
         $item = Item::create($validated);
 
@@ -145,7 +148,9 @@ class ItemController extends Controller
             'location' => 'required|string|max:255',
             'date_lost_found' => 'required|date|before_or_equal:today',
             'contact_info' => 'nullable|string|max:500',
+            'private_identifiers' => 'nullable|string|max:2000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'unique_identifiers' => 'nullable|string',
         ]);
 
         $validated['user_id'] = Auth::id();
@@ -155,6 +160,9 @@ class ItemController extends Controller
         if ($request->hasFile('image')) {
             $validated['image_path'] = $request->file('image')->store('items', 'public');
         }
+
+        $validated['private_identifiers'] = $request->input('private_identifiers');
+        $validated['unique_identifiers'] = $request->input('unique_identifiers');
 
         $item = Item::create($validated);
 
@@ -185,6 +193,7 @@ class ItemController extends Controller
             'contact_info' => 'nullable|string|max:500',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'in:active,returned,claimed',
+            'unique_identifiers' => 'nullable|string',
         ]);
 
         if ($request->hasFile('image')) {
@@ -193,6 +202,8 @@ class ItemController extends Controller
             }
             $validated['image_path'] = $request->file('image')->store('items', 'public');
         }
+
+        $validated['unique_identifiers'] = $request->input('unique_identifiers');
 
         $item->update($validated);
 
@@ -275,12 +286,10 @@ class ItemController extends Controller
 
     public function destroyMyItem(Item $item)
     {
-        // Check if item belongs to user
         if ($item->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
 
-        // Only allow deleting lost items directly
         if ($item->type !== 'lost') {
             abort(403, 'This item cannot be deleted directly.');
         }
@@ -309,7 +318,6 @@ class ItemController extends Controller
             'reason' => 'required|string|max:500'
         ]);
 
-        // Save deletion request for admin approval
         FoundItemDeletionRequest::create([
             'item_id' => $item->id,
             'user_id' => auth()->id(),
@@ -322,24 +330,21 @@ class ItemController extends Controller
             ->with('success', 'Your deletion request has been submitted for admin approval.');
     }
 
+    public function myItems($type, Request $request)
+    {
+        $query = Item::where('user_id', auth()->id())
+                     ->where('type', $type)
+                     ->latest();
 
-public function myItems($type, Request $request)
-{
-    $query = Item::where('user_id', auth()->id())
-                 ->where('type', $type)
-                 ->latest();
+        if ($type === 'found') {
+            $query->with('deletionRequest');
+        }
 
-    if ($type === 'found') {
-        $query->with('deletionRequest');
+        $items = $query->get();
+
+        return view('my_items.index', [
+            'type' => $type,
+            'items' => $items
+        ]);
     }
-
-    $items = $query->get();
-
-    return view('my_items.index', [
-        'type' => $type,
-        'items' => $items
-    ]);
-}
-
-
 }

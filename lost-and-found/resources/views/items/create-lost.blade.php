@@ -7,6 +7,8 @@
     <h1 class="text-2xl font-bold mb-6">Report Lost Item</h1>
 
     @if ($errors->any())
+
+
         <div class="mb-4 text-red-600">
             <ul class="list-disc pl-5">
                 @foreach ($errors->all() as $error)

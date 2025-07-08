@@ -33,4 +33,10 @@ class Claim extends Model
     {
         return $this->belongsTo(Item::class);
     }
+
+    public function lostItem()
+    {
+        return $this->belongsTo(Item::class, 'lost_item_id');
+    }
+
 }

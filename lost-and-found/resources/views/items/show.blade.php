@@ -22,6 +22,19 @@
         @if ($item->contact_info)
             <p class="mt-4"><strong>Contact Info:</strong> {{ $item->contact_info }}</p>
         @endif
+
+        {{-- Unique Identifiers - ADMIN ONLY --}}
+        @auth
+            @if(auth()->user()->isAdmin())
+                @if(!empty($item->unique_identifiers))
+                    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
+                        <strong>Unique Identifiers (Admin Only):</strong>
+                        <p>{{ $item->unique_identifiers }}</p>
+                    </div>
+                @endif
+            @endif
+        @endauth
+
     </div>
 
     @if ($potentialMatches->count())

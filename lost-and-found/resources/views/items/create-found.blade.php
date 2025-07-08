@@ -67,9 +67,21 @@
         </div>
 
         <div class="mb-4">
+            <label for="unique_identifiers" class="block text-gray-700 text-sm font-bold mb-2">
+                Unique Identifiers (Private, for Admin only)
+            </label>
+            <textarea name="unique_identifiers" id="unique_identifiers"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="E.g. bag contained textbooks, wallet has initials, etc.">{{ old('unique_identifiers') }}</textarea>
+        </div>
+
+        <div class="mb-4">
             <label class="block mb-1">Contact Info</label>
             <textarea name="contact_info" class="w-full border rounded p-2">{{ old('contact_info', $prefill->contact_info ?? '') }}</textarea>
         </div>
+
+
+
 
         <div class="mb-4">
             <label class="block mb-1">Upload Image</label>

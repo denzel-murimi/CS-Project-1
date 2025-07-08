@@ -26,6 +26,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+
+
             // Indexes for better performance
             $table->index(['type', 'status']);
             $table->index(['category']);

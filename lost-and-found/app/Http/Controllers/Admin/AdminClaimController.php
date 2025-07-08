@@ -9,9 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminClaimController extends Controller
 {
+    /**
+     * Display a listing of claims, with optional filtering.
+     */
     public function index(Request $request)
     {
-        $query = \App\Models\Claim::with(['user', 'item']);
+        $query = Claim::with(['user', 'item']);
 
         if ($request->filled('status') && in_array($request->status, ['pending', 'approved', 'rejected'])) {
             $query->where('status', $request->status);
@@ -22,19 +25,51 @@ class AdminClaimController extends Controller
         return view('admin.claims.index', compact('claims'));
     }
 
+    /**
+     * Show details of a single claim.
+     */
+    public function show(Claim $claim)
+    {
+        $claim->load([
+            'item',
+            'user',
+            'lostItem'
+        ]);
 
+        return view('admin.claims.show', compact('claim'));
+    }
+
+    /**
+     * Update the status of a claim.
+     */
     public function update(Request $request, $id)
     {
         if (!Auth::user() || !Auth::user()->isAdmin()) {
             abort(403, 'Unauthorized.');
         }
 
+        $validated = $request->validate([
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
+
         $claim = Claim::findOrFail($id);
-        $claim->status = $request->status;
+
+        // If approving, check for other approved claims for the same item
+        if ($validated['status'] === 'approved') {
+            $otherApproved = Claim::where('item_id', $claim->item_id)
+                ->where('status', 'approved')
+                ->where('id', '!=', $claim->id)
+                ->exists();
+
+            if ($otherApproved) {
+                return redirect()->back()->with('error', 'Another claim for this item is already approved.');
+            }
+        }
+
+        $claim->status = $validated['status'];
         $claim->save();
 
         return redirect()->route('admin.claims.index')->with('success', 'Claim status updated successfully.');
     }
-
 
 }

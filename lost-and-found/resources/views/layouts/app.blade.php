@@ -6,9 +6,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Strathmore Lost & Found')</title>
 
-     <!-- Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
     <!-- Styles / Scripts -->
     <script defer type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script defer nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -61,7 +62,7 @@
                             <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" id="user-menu">
                                 <div class="py-1">
                                     <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                                    {{-- <a href="{{ route('my-items') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Items</a>--}}
+                                    {{-- <a href="{{ route('my-items') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Items</a> --}}
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -71,10 +72,12 @@
                                 </div>
                             </div>
                         </div>
-                    @else
+                    @endauth
+
+                    @guest
                         <a href="{{ route('login') }}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
                         <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-md text-sm font-medium">Register</a>
-                    @endauth
+                    @endguest
 
                     @auth
                         @if(auth()->user()->isAdmin())
@@ -88,7 +91,6 @@
 
     <!-- Main Content -->
     <main class="flex-1 max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 w-full">
-        <!-- Flash Messages -->
         @if(session('success'))
             <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
                 <span class="block sm:inline">{{ session('success') }}</span>
@@ -126,12 +128,10 @@
 
     <!-- Scripts -->
     <script>
-        // Toggle user menu
         document.getElementById('user-menu-button')?.addEventListener('click', function() {
             document.getElementById('user-menu').classList.toggle('hidden');
         });
 
-        // Close user menu when clicking outside
         document.addEventListener('click', function(event) {
             const userMenu = document.getElementById('user-menu');
             const userMenuButton = document.getElementById('user-menu-button');
@@ -141,7 +141,6 @@
             }
         });
 
-        // Auto-hide flash messages after 5 seconds
         setTimeout(function() {
             const alerts = document.querySelectorAll('[role="alert"]');
             alerts.forEach(function(alert) {

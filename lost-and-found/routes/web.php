@@ -115,6 +115,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', AdminUserController::class);
     Route::resource('claims', AdminClaimController::class)->only(['index', 'update']);
+    Route::get('claims/{claim}', [\App\Http\Controllers\Admin\AdminClaimController::class, 'show'])
+    ->name('claims.show');
+
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -141,6 +144,8 @@ Route::get('/found-items/{item}/delete-reason', [ItemController::class, 'showDel
 // Handle form submission for deletion request
 Route::post('/found-items/{item}/delete-reason', [ItemController::class, 'submitDeleteReason'])
     ->name('found.items.delete.reason.submit');
+
+
 
 
 
