@@ -14,48 +14,35 @@ use App\Http\Controllers\Admin\AdminItemController;
 use App\Http\Controllers\Admin\AdminClaimController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminReportController;
+use App\Http\Controllers\Admin\StationController;
 
-use Illuminate\Support\Facades\Mail;
-
-
-
-
-
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-
-//Registration routes
+// Registration
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
-//Login routes
+// Login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-//Forgot Password routes
+// Forgot Password
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])
     ->name('password.request');
-
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])
     ->name('password.email');
 
-//Claim routes
-
-Route::middleware('auth')->group(function () {
-    Route::get('/claims/create', [ClaimController::class, 'create'])
-        ->name('claims.create');
-
-    Route::post('/claims/{item}', [ClaimController::class, 'store'])
-        ->name('claims.store');
-});
-
-
-    // Dashboard route (this blade template)
+// Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Lost Items routes
+// Lost items
 Route::middleware('auth')->group(function () {
     Route::get('/items/lost/create', [ItemController::class, 'createLost'])
         ->name('items.lost.create');
@@ -64,13 +51,13 @@ Route::middleware('auth')->group(function () {
         ->name('items.lost.store');
 
     Route::get('/items/search', [ItemController::class, 'search'])
-    ->name('items.search');
+        ->name('items.search');
 
     Route::get('/items/{item}', [ItemController::class, 'show'])
-    ->name('items.show');
+        ->name('items.show');
 });
 
-// Found Items routes
+// Found items
 Route::middleware('auth')->group(function () {
     Route::get('/items/found/create', [ItemController::class, 'createFound'])
         ->name('items.found.create');
@@ -79,82 +66,68 @@ Route::middleware('auth')->group(function () {
         ->name('items.found.store');
 });
 
-
-// Search/Browse Items routes
+// General browse
 Route::get('/items/search', [ItemController::class, 'search'])->name('items.search');
-
-// Optional: Additional routes you might need
 Route::get('/items/{item}', [ItemController::class, 'show'])->name('items.show');
 Route::get('/items', [ItemController::class, 'index'])->name('items.index');
 
-
-// Profile Routes
+// Profile
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-// Admin Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-});
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/items', [AdminItemController::class, 'index'])->name('admin.items.index');
-});
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/claims', [AdminClaimController::class, 'index'])->name('admin.claims.index');
-});
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
-});
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/reports', [AdminReportController::class, 'index'])->name('admin.reports.index');
-});
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('items', AdminItemController::class);
-});
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('users', AdminUserController::class);
-    Route::resource('claims', AdminClaimController::class)->only(['index', 'update']);
-    Route::get('claims/{claim}', [\App\Http\Controllers\Admin\AdminClaimController::class, 'show'])
-    ->name('claims.show');
-
+// Claims
+Route::middleware('auth')->group(function () {
+    Route::get('/claims/create', [ClaimController::class, 'create'])->name('claims.create');
+    Route::post('/claims/{item}', [ClaimController::class, 'store'])->name('claims.store');
+    Route::get('/my-claims', [ClaimController::class, 'myClaims'])->name('claims.my');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/my-claims', [\App\Http\Controllers\ClaimController::class, 'myClaims'])
-        ->name('claims.my');
-});
-
-Route::post('/my-claims/{id}/appeal', [\App\Http\Controllers\ClaimController::class, 'appeal'])
-    ->name('claims.appeal')
-    ->middleware('auth');
+Route::post('/my-claims/{id}/appeal', [ClaimController::class, 'appeal'])
+    ->middleware('auth')
+    ->name('claims.appeal');
 
 Route::get('/my-items/{item}', [ItemController::class, 'myItems'])->name('my.items.index');
 Route::delete('/my-items/{item}', [ItemController::class, 'destroyMyItem'])->name('my.items.destroy');
 
-
-// Delete a LOST item (direct delete)
-Route::delete('/my-items/{item}', [ItemController::class, 'destroyMyItem'])
-    ->name('my.items.destroy');
-
-// Show form to request deletion for FOUND item
+// Found items deletion request
 Route::get('/found-items/{item}/delete-reason', [ItemController::class, 'showDeleteReasonForm'])
     ->name('found.items.delete.reason.form');
-
-// Handle form submission for deletion request
 Route::post('/found-items/{item}/delete-reason', [ItemController::class, 'submitDeleteReason'])
     ->name('found.items.delete.reason.submit');
 
+// -------------------------
+// Admin routes
+// -------------------------
 
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::resource('items', AdminItemController::class);
+    Route::resource('users', AdminUserController::class);
+    Route::resource('claims', AdminClaimController::class)->only(['index', 'update']);
+    Route::get('claims/{claim}', [AdminClaimController::class, 'show'])->name('claims.show');
+    Route::get('/items', [AdminItemController::class, 'index'])->name('items.index');
+    Route::get('/claims', [AdminClaimController::class, 'index'])->name('claims.index');
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
+});
 
+// -------------------------
+// Admin Station routes
+// -------------------------
 
-
-// If you have authentication routes
-//Auth::routes();
-
-
-
-// // Home route (redirect to dashboard if authenticated)
-// Route::get('/', function () {
-//     return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
-// })->name('home');
+Route::middleware(['auth'])->prefix('admin/station')->name('admin.station.')->group(function () {
+    // Wrap closure-based middleware in a group instead of middleware array
+    Route::group([
+        'middleware' => function ($request, $next) {
+            if (!auth()->check() || !auth()->user()->isAdmin()) {
+                abort(403, 'Unauthorized.');
+            }
+            return $next($request);
+        }
+    ], function () {
+        Route::get('/scan', [StationController::class, 'scanForm'])->name('scan');
+        Route::post('/scan', [StationController::class, 'processScan'])->name('processScan');
+        Route::post('/return-item/{claim}', [StationController::class, 'markReturned'])->name('returnItem');
+    });
+});

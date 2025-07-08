@@ -18,76 +18,78 @@
 </head>
 <body class="bg-gray-50 flex flex-col min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-blue-800 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <img class="h-25 w-auto" src="{{ asset('images/strathmore-logo.png') }}" alt="Strathmore University">
-                    </div>
-                    <div class="ml-4">
-                        <h1 class="text-xl font-bold text-white">Lost & Found System</h1>
-                    </div>
-                </div>
+    <!-- Navigation -->
+<nav class="bg-blue-800 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
 
-                <div class="flex items-center space-x-4">
-                    <div class="hidden md:block">
-                        <div class="ml-10 flex items-baseline space-x-4">
-                            <a href="{{ route('dashboard') }}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                                <i class="fas fa-home mr-1"></i> Dashboard
-                            </a>
-                            <a href="{{ route('items.lost.create') }}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                                <i class="fas fa-plus-circle mr-1"></i> Report Lost
-                            </a>
-                            <a href="{{ route('items.found.create') }}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                                <i class="fas fa-search mr-1"></i> Report Found
-                            </a>
-                            <a href="{{ route('items.search') }}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                                <i class="fas fa-list mr-1"></i> Browse Items
-                            </a>
-                            <a href="{{ route('claims.my') }}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                                My Claims
-                            </a>
-                        </div>
-                    </div>
+            {{-- Left: Logo & Title --}}
+            <div class="flex items-center space-x-3">
+                <img class="h-10 w-auto" src="{{ asset('images/strathmore-logo.png') }}" alt="Strathmore University">
+                <h1 class="text-xl font-semibold text-white">Lost & Found</h1>
+            </div>
 
-                    @auth
-                        <div class="relative">
-                            <button class="bg-blue-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-800 focus:ring-white" id="user-menu-button">
-                                <span class="sr-only">Open user menu</span>
-                                <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
-                                    <span class="text-white text-sm font-medium">{{ substr(Auth::user()->name, 0, 1) }}</span>
-                                </div>
-                            </button>
-                            <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" id="user-menu">
-                                <div class="py-1">
-                                    <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                                    {{-- <a href="{{ route('my-items') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Items</a> --}}
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            Sign out
-                                        </button>
-                                    </form>
-                                </div>
+            {{-- Center: Navigation Links --}}
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="{{ route('dashboard') }}" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+                    Dashboard
+                </a>
+                <a href="{{ route('items.lost.create') }}" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+                    Report Lost
+                </a>
+                <a href="{{ route('items.found.create') }}" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+                    Report Found
+                </a>
+                <a href="{{ route('items.search') }}" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+                    Browse Items
+                </a>
+                <a href="{{ route('claims.my') }}" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+                    My Claims
+                </a>
+                @auth
+                    @if(auth()->user()->isAdmin())
+                        <a href="{{ route('admin.station.scan') }}" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+                            Station Scanner
+                        </a>
+                        <a href="{{ route('admin.dashboard') }}" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+                            Admin Panel
+                        </a>
+                    @endif
+                @endauth
+            </div>
+
+            {{-- Right: Auth Buttons --}}
+            <div class="flex items-center space-x-3">
+                @guest
+                    <a href="{{ route('login') }}" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                    <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-md text-sm font-medium">Register</a>
+                @endguest
+
+                @auth
+                    <div class="relative">
+                        <button class="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-white" id="user-menu-button">
+                            <span class="sr-only">Open user menu</span>
+                            <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
+                                <span class="text-white font-medium">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                            </div>
+                        </button>
+                        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50" id="user-menu">
+                            <div class="py-1">
+                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</button>
+                                </form>
                             </div>
                         </div>
-                    @endauth
-
-                    @guest
-                        <a href="{{ route('login') }}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                        <a href="{{ route('register') }}" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-md text-sm font-medium">Register</a>
-                    @endguest
-
-                    @auth
-                        @if(auth()->user()->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="text-white">Admin Panel</a>
-                        @endif
-                    @endauth
-                </div>
+                    </div>
+                @endauth
             </div>
+
         </div>
-    </nav>
+    </div>
+</nav>
+
 
     <!-- Main Content -->
     <main class="flex-1 max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 w-full">
