@@ -34,4 +34,37 @@ class ClaimController extends Controller
         return redirect()->route('items.show', $item)
             ->with('success', 'Your claim has been submitted!');
     }
+
+     public function myClaims()
+    {
+        $user = Auth::user();
+
+        $claims = Claim::with('item')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        return view('claims.my_claims', compact('claims'));
+    }
+
+    public function appeal(Request $request, $id)
+{
+    $claim = Claim::where('id', $id)
+                  ->where('user_id', Auth::id())
+                  ->firstOrFail();
+
+    if ($claim->status !== 'rejected') {
+        return redirect()->route('claims.my')->with('error', 'Only rejected claims can be appealed.');
+    }
+
+    if ($claim->appeal_count >= 2) {
+        return redirect()->route('claims.my')->with('error', 'You have reached the maximum number of appeals.');
+    }
+
+    $claim->status = 'pending';
+    $claim->appeal_count += 1;
+    $claim->save();
+
+    return redirect()->route('claims.my')->with('success', 'Your appeal has been submitted.');
+}
 }

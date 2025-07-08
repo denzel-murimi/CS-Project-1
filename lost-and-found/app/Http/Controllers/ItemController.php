@@ -272,4 +272,74 @@ class ItemController extends Controller
             'Other',
         ];
     }
+
+    public function destroyMyItem(Item $item)
+    {
+        // Check if item belongs to user
+        if ($item->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Only allow deleting lost items directly
+        if ($item->type !== 'lost') {
+            abort(403, 'This item cannot be deleted directly.');
+        }
+
+        $item->delete();
+
+        return back()->with('success', 'Lost item deleted successfully.');
+    }
+
+    public function showDeleteReasonForm(Item $item)
+    {
+        if ($item->user_id !== auth()->id() || $item->type !== 'found') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('found_items.delete_reason', compact('item'));
+    }
+
+    public function submitDeleteReason(Request $request, Item $item)
+    {
+        if ($item->user_id !== auth()->id() || $item->type !== 'found') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'reason' => 'required|string|max:500'
+        ]);
+
+        // Save deletion request for admin approval
+        FoundItemDeletionRequest::create([
+            'item_id' => $item->id,
+            'user_id' => auth()->id(),
+            'reason' => $request->reason,
+            'status' => 'pending',
+        ]);
+
+        return redirect()
+            ->route('my.items.index', ['type' => 'found'])
+            ->with('success', 'Your deletion request has been submitted for admin approval.');
+    }
+
+
+public function myItems($type, Request $request)
+{
+    $query = Item::where('user_id', auth()->id())
+                 ->where('type', $type)
+                 ->latest();
+
+    if ($type === 'found') {
+        $query->with('deletionRequest');
+    }
+
+    $items = $query->get();
+
+    return view('my_items.index', [
+        'type' => $type,
+        'items' => $items
+    ]);
+}
+
+
 }

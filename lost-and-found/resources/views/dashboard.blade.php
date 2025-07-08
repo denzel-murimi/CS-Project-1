@@ -178,8 +178,8 @@
                         @endforeach
                     </div>
                     <div class="mt-4">
-                        <a href="{{ route('items.search', ['type' => 'lost']) }}" class="text-sm text-blue-600 hover:text-blue-500">
-                            View all lost items <i class="fas fa-arrow-right ml-1"></i>
+                        <a href="{{ route('my.items.index', 'lost') }}" class="text-sm text-blue-600 hover:text-blue-500">
+                            View all my lost items <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
                 @else
@@ -215,8 +215,8 @@
                         @endforeach
                     </div>
                     <div class="mt-4">
-                        <a href="{{ route('items.search', ['type' => 'found']) }}" class="text-sm text-blue-600 hover:text-blue-500">
-                            View all found items <i class="fas fa-arrow-right ml-1"></i>
+                        <a href="{{ route('my.items.index', 'found') }}" class="text-sm text-blue-600 hover:text-blue-500">
+                            View all my found items <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
                 @else

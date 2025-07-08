@@ -15,5 +15,22 @@ class Claim extends Model
         'message',
         'contact_info',
         'status',
+        'appeal_count',
     ];
+
+    /**
+     * Get the user who made the claim.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the item associated with the claim.
+     */
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
 }

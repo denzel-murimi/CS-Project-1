@@ -44,6 +44,9 @@
                             <a href="{{ route('items.search') }}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                                 <i class="fas fa-list mr-1"></i> Browse Items
                             </a>
+                            <a href="{{ route('claims.my') }}" class="text-gray-300 hover:bg-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                                My Claims
+                            </a>
                         </div>
                     </div>
 

@@ -109,6 +109,40 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/reports', [AdminReportController::class, 'index'])->name('admin.reports.index');
 });
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('items', AdminItemController::class);
+});
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('users', AdminUserController::class);
+    Route::resource('claims', AdminClaimController::class)->only(['index', 'update']);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-claims', [\App\Http\Controllers\ClaimController::class, 'myClaims'])
+        ->name('claims.my');
+});
+
+Route::post('/my-claims/{id}/appeal', [\App\Http\Controllers\ClaimController::class, 'appeal'])
+    ->name('claims.appeal')
+    ->middleware('auth');
+
+Route::get('/my-items/{item}', [ItemController::class, 'myItems'])->name('my.items.index');
+Route::delete('/my-items/{item}', [ItemController::class, 'destroyMyItem'])->name('my.items.destroy');
+
+
+// Delete a LOST item (direct delete)
+Route::delete('/my-items/{item}', [ItemController::class, 'destroyMyItem'])
+    ->name('my.items.destroy');
+
+// Show form to request deletion for FOUND item
+Route::get('/found-items/{item}/delete-reason', [ItemController::class, 'showDeleteReasonForm'])
+    ->name('found.items.delete.reason.form');
+
+// Handle form submission for deletion request
+Route::post('/found-items/{item}/delete-reason', [ItemController::class, 'submitDeleteReason'])
+    ->name('found.items.delete.reason.submit');
+
+
 
 // If you have authentication routes
 //Auth::routes();

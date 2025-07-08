@@ -15,31 +15,51 @@ class DashboardController extends Controller
 
     public function index()
     {
-        // Get statistics
+        $user = auth()->user();
+
+        $recentLostItems = Item::where('type', 'lost')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $recentFoundItems = Item::where('type', 'found')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
         $stats = [
-            'lost_items' => Item::lost()->active()->count(),
-            'found_items' => Item::found()->active()->count(),
-            'returned_items' => Item::returned()->count(),
-            'my_reports' => Item::where('user_id', Auth::id())->count(),
+            'lost_items' => Item::where('type', 'lost')->where('user_id', $user->id)->count(),
+            'found_items' => Item::where('type', 'found')->where('user_id', $user->id)->count(),
+            'returned_items' => Item::where('status', 'returned')->where('user_id', $user->id)->count(),
+            'my_reports' => Item::where('user_id', $user->id)->count(),
         ];
 
-        // Get recent items (last 7 days, limit to 5 each)
-        $recentLostItems = Item::lost()
-            ->active()
-            ->recent(7)
-            ->with('user')
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
-
-        $recentFoundItems = Item::found()
-            ->active()
-            ->recent(7)
-            ->with('user')
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
-
-        return view('dashboard', compact('stats', 'recentLostItems', 'recentFoundItems'));
+        return view('dashboard', compact('recentLostItems', 'recentFoundItems', 'stats'));
     }
+
+    public function myItems(Request $request)
+    {
+        $type = $request->get('type', 'lost');
+
+        $items = Item::where('type', $type)
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
+        return view('my_items.index', compact('items', 'type'));
+    }
+
+    public function destroyMyItem(Item $item)
+    {
+        if ($item->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $item->delete();
+
+        return back()->with('success', 'Item deleted.');
+    }
+
 }
