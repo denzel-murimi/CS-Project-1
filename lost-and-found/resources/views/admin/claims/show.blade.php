@@ -44,6 +44,15 @@
 
         <p><strong>ID:</strong> #{{ $claim->id }}</p>
         <p><strong>Status:</strong> {{ ucfirst($claim->status) }}</p>
+        @if ($claim->photo_path)
+            <div class="mt-4">
+                <h3 class="text-xl font-semibold mb-2">Uploaded Photo</h3>
+                <img src="{{ asset('storage/' . $claim->photo_path) }}"
+                    alt="Claim Photo"
+                    class="w-48 rounded border border-gray-300">
+            </div>
+        @endif
+
         <p><strong>Date Submitted:</strong> {{ $claim->created_at->format('d M Y') }}</p>
 
         <hr class="my-4">
