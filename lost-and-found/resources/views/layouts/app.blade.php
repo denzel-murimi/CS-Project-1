@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let isMenuOpen = false;
     let lastOpenTime = 0;
     const MINIMUM_OPEN_TIME = 1500; // 1.5 seconds
-    
+
     if (btn && menu && container) {
         function showMenu() {
             clearTimeout(dropdownTimeout);
@@ -90,46 +90,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 lastOpenTime = Date.now();
             }
         }
-        
+
         function hideMenu() {
             if (isMenuOpen) {
                 const timeOpen = Date.now() - lastOpenTime;
                 const remainingTime = Math.max(0, MINIMUM_OPEN_TIME - timeOpen);
-                
+
                 dropdownTimeout = setTimeout(() => {
                     menu.classList.add('hidden');
                     isMenuOpen = false;
                 }, remainingTime);
             }
         }
-        
+
         function cancelHide() {
             clearTimeout(dropdownTimeout);
         }
-        
+
         // Show menu on button hover/focus
         btn.addEventListener('mouseenter', showMenu);
         btn.addEventListener('focus', showMenu);
-        
+
         // Cancel hide when hovering over button
         btn.addEventListener('mouseenter', cancelHide);
-        
+
         // Hide menu when leaving button (with delay)
         btn.addEventListener('mouseleave', hideMenu);
         btn.addEventListener('blur', hideMenu);
-        
+
         // Keep menu open when hovering over it
         menu.addEventListener('mouseenter', cancelHide);
-        
+
         // Hide menu when leaving the menu
         menu.addEventListener('mouseleave', hideMenu);
-        
+
         // Keep menu open when hovering anywhere in the container
         container.addEventListener('mouseenter', cancelHide);
-        
+
         // Hide menu when leaving the entire container
         container.addEventListener('mouseleave', hideMenu);
-        
+
         // Close menu when clicking outside
         document.addEventListener('click', function(e) {
             if (!container.contains(e.target)) {
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 isMenuOpen = false;
             }
         });
-        
+
         // Close menu when clicking on a menu item
         const menuItems = menu.querySelectorAll('a');
         menuItems.forEach(item => {
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 isMenuOpen = false;
             });
         });
-        
+
         // Optional: Close menu on Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && isMenuOpen) {
