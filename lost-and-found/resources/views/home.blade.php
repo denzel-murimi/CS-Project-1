@@ -1,16 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-gray-100 py-6">
+<div class="bg-gradient-to-b from-blue-100 to-gray-100 min-h-screen">
+    {{-- Hero Section --}}
+    <section class="w-full bg-gradient-to-r from-blue-600 to-blue-400 py-12 shadow-lg">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 drop-shadow-lg">Welcome to Strathmore University's Lost &amp; Found</h1>
+            <p class="text-lg md:text-xl text-blue-100 mb-8">Easily report, search, and reclaim lost or found items on campus. Your community, your belongings, your safety.</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="{{ route('items.lost.create') }}" class="bg-white text-blue-700 font-semibold px-6 py-3 rounded shadow hover:bg-blue-100 hover:scale-105 transition-all duration-200">Report Lost Item</a>
+                <a href="{{ route('items.found.create') }}" class="bg-blue-700 text-white font-semibold px-6 py-3 rounded shadow hover:bg-blue-800 hover:scale-105 transition-all duration-200">Add Found Item</a>
+                <a href="#itemsContainer" class="bg-gradient-to-r from-blue-400 to-blue-600 text-white font-semibold px-6 py-3 rounded shadow hover:from-blue-500 hover:to-blue-700 hover:scale-105 transition-all duration-200">Browse Items</a>
+            </div>
+        </div>
+    </section>
+
     {{-- Search --}}
-    <div class="max-w-6xl mx-auto mt-6 px-6">
+    <div class="max-w-6xl mx-auto mt-8 px-4 md:px-6">
         <input type="text" id="searchInput" placeholder="🔍 Search for lost or found items..."
-            class="w-full border-2 border-gray-400 p-3 rounded mb-6" />
+            class="w-full border-2 border-blue-400 focus:border-blue-600 p-3 rounded mb-8 shadow-sm transition duration-200" />
     </div>
 
-    <div class="max-w-6xl mx-auto px-6 flex">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row gap-6">
         {{-- Sidebar --}}
-        <div class="w-1/4">
+        <div class="w-full md:w-1/4 mb-6 md:mb-0">
             <div class="mb-4 bg-white p-4 border rounded">
                 <h3 class="font-bold mb-2">Type</h3>
                 <div class="space-y-2">
@@ -81,7 +94,7 @@
         </div>
 
         {{-- Main content --}}
-        <div class="w-3/4 pl-6">
+        <div class="w-full md:w-3/4 md:pl-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold">Recent Items</h2>
                 <div id="itemCount" class="text-sm text-gray-600">
@@ -91,23 +104,23 @@
 
             <div id="itemsContainer">
                 @foreach ($recentItems as $item)
-                    <div class="item-card flex bg-white border border-gray-200 rounded p-4 mb-4 shadow-md hover:shadow-lg transition-shadow duration-200"
+                    <div class="item-card flex flex-col md:flex-row bg-white border border-gray-200 rounded-xl p-4 mb-6 shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-blue-400 transition-all duration-200 group"
                          data-type="{{ strtolower($item->type) }}"
                          data-category="{{ strtolower($item->category) }}"
                          data-location="{{ strtolower(str_replace(' ', '_', $item->location)) }}"
                          data-name="{{ strtolower($item->name) }}"
                          data-description="{{ strtolower($item->description ?? '') }}">
-                        <div class="w-24 h-24 bg-gray-300 flex items-center justify-center mr-4 rounded">
+                        <div class="w-full md:w-24 h-40 md:h-24 bg-gray-200 flex items-center justify-center mb-4 md:mb-0 md:mr-4 rounded-lg overflow-hidden group-hover:ring-2 group-hover:ring-blue-400 transition-all duration-200">
                             @if($item->image_path)
-                                <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}" class="object-cover w-full h-full rounded">
+                                <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}" class="object-cover w-full h-full rounded-lg group-hover:scale-105 transition-transform duration-200">
                             @else
-                                <span class="text-xs text-center">{{ ucfirst($item->category) }}</span>
+                                <span class="text-xs text-center text-gray-500">{{ ucfirst($item->category) }}</span>
                             @endif
                         </div>
                         <div class="flex-1">
-                            <h3 class="font-bold text-lg">
+                            <h3 class="font-bold text-lg flex items-center gap-2">
                                 {{ $item->name }}
-                                <span class="uppercase text-sm px-2 py-1 rounded text-white {{ $item->type === 'lost' ? 'bg-red-500' : 'bg-green-500' }}">
+                                <span class="uppercase text-xs px-2 py-1 rounded-full text-white {{ $item->type === 'lost' ? 'bg-red-500' : 'bg-green-500' }} shadow">
                                     {{ strtoupper($item->type) }}
                                 </span>
                             </h3>
@@ -116,7 +129,7 @@
                             @if($item->description)
                                 <p class="text-sm text-gray-700 mt-2">{{ Str::limit($item->description, 100) }}</p>
                             @endif
-                            <a href="{{ route('items.show', $item->id) }}" class="text-blue-500 hover:underline mt-2 inline-block">View Details</a>
+                            <a href="{{ route('items.show', $item->id) }}" class="text-blue-600 font-semibold hover:underline hover:text-blue-800 mt-2 inline-block transition-colors duration-200">View Details</a>
                         </div>
                     </div>
                 @endforeach
