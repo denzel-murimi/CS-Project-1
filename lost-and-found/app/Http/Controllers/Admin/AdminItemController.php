@@ -9,13 +9,35 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminItemController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (!Auth::user() || !Auth::user()->isAdmin()) {
             abort(403, 'Unauthorized.');
         }
 
-        $items = Item::latest()->get();
+        $query = Item::query();
+
+        // Search by name or description
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
+                  ->orWhere('description', 'like', "%$search%")
+                  ->orWhere('id', $search);
+            });
+        }
+
+        // Filter by type
+        if ($request->filled('type')) {
+            $query->where('type', $request->input('type'));
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        $items = $query->latest()->get();
 
         return view('admin.items.index', compact('items'));
     }

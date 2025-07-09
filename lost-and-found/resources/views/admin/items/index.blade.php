@@ -130,7 +130,7 @@
 
     <!-- Search and Filter -->
     <div class="mb-6 bg-white rounded-lg shadow-sm p-6">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+        <form method="GET" action="" class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
             <div class="flex-1 max-w-lg">
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -138,26 +138,27 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </div>
-                    <input type="text" id="search" placeholder="Search items..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                    <input type="text" name="search" id="search" placeholder="Search items..." value="{{ request('search') }}" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
             </div>
             <div class="flex space-x-3">
-                <select class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                <select name="type" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">All Types</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="books">Books</option>
-                    <option value="other">Other</option>
+                    <option value="electronics" {{ request('type') == 'electronics' ? 'selected' : '' }}>Electronics</option>
+                    <option value="clothing" {{ request('type') == 'clothing' ? 'selected' : '' }}>Clothing</option>
+                    <option value="books" {{ request('type') == 'books' ? 'selected' : '' }}>Books</option>
+                    <option value="other" {{ request('type') == 'other' ? 'selected' : '' }}>Other</option>
                 </select>
-                <select class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+                <select name="status" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">All Status</option>
-                    <option value="active">Active</option>
-                    <option value="claimed">Claimed</option>
-                    <option value="returned">Returned</option>
-                    <option value="inactive">Inactive</option>
+                    <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                    <option value="claimed" {{ request('status') == 'claimed' ? 'selected' : '' }}>Claimed</option>
+                    <option value="returned" {{ request('status') == 'returned' ? 'selected' : '' }}>Returned</option>
+                    <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
                 </select>
+                <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Filter</button>
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- Items Table -->
