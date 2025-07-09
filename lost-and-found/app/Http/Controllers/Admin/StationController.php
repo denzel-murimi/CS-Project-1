@@ -55,7 +55,15 @@ class StationController extends Controller
     public function markReturned(Request $request, Claim $claim)
     {
         $claim->status = 'returned';
+        $claim->returned_at = now();
         $claim->save();
+
+        // Also update the item as returned
+        if ($claim->item) {
+            $claim->item->status = 'returned';
+            $claim->item->returned_at = now();
+            $claim->item->save();
+        }
 
         // Optionally delete linked lost item
         if ($claim->item && $claim->item->type === 'lost') {

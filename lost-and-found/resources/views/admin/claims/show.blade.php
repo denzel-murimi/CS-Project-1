@@ -40,10 +40,28 @@
     @endif
 
     <div class="bg-white shadow rounded p-6">
-        <h2 class="text-xl font-semibold mb-2">Claim Info</h2>
+        <h2 class="text-xl font-semibold mb-2">Found Item Info</h2>
+        <p><strong>Name:</strong> {{ $claim->item->name }}</p>
+        <p><strong>Description:</strong> {{ $claim->item->description ?? 'N/A' }}</p>
+        <p><strong>Category:</strong> {{ $claim->item->category ?? 'N/A' }}</p>
+        <p><strong>Location:</strong> {{ $claim->item->location ?? 'N/A' }}</p>
+        <p><strong>Date Found:</strong> {{ $claim->item->date_lost_found ? $claim->item->date_lost_found->format('d M Y') : 'N/A' }}</p>
+        <p><strong>Item Unique Identifier:</strong> {{ $claim->item->id }}</p>
+        @if($claim->item->image_path)
+            <div class="mt-2">
+                <strong>Item Image:</strong><br>
+                <img src="{{ asset('storage/' . $claim->item->image_path) }}" alt="Item Image" class="w-48 rounded border border-gray-300">
+            </div>
+        @endif
 
-        <p><strong>ID:</strong> #{{ $claim->id }}</p>
+        <hr class="my-4">
+
+        <h2 class="text-xl font-semibold mb-2">Claim Info</h2>
+        <p><strong>Claim ID:</strong> #{{ $claim->id }}</p>
         <p><strong>Status:</strong> {{ ucfirst($claim->status) }}</p>
+        <p><strong>Message:</strong> {{ $claim->message }}</p>
+        <p><strong>Contact Info:</strong> {{ $claim->contact_info }}</p>
+        <p><strong>Date Submitted:</strong> {{ $claim->created_at->format('d M Y') }}</p>
         @if ($claim->photo_path)
             <div class="mt-4">
                 <h3 class="text-xl font-semibold mb-2">Uploaded Photo</h3>
@@ -53,9 +71,16 @@
             </div>
         @endif
 
+        <hr class="my-4">
+
+        <h2 class="text-xl font-semibold mb-2">Claimant</h2>
+        <p><strong>Username:</strong> {{ $claim->user->username }}</p>
+        <p><strong>Email:</strong> {{ $claim->user->email }}</p>
+        <p><strong>User Unique Identifier:</strong> {{ $claim->user->id }}</p>
+
         @if ($claim->appeal_count > 0)
             <hr class="my-4">
-            <h2 class="text-xl font-semibold mb-2">Appeal Details</h2>
+            <h2 class="text-xl font-semibold mb-2">Latest Appeal Info</h2>
             <p><strong>Appeal Message:</strong> {{ $claim->appeal_message ?? 'N/A' }}</p>
             @if ($claim->photo_path)
                 <div class="mt-2">
@@ -65,25 +90,8 @@
             @endif
         @endif
 
-        <p><strong>Date Submitted:</strong> {{ $claim->created_at->format('d M Y') }}</p>
-
-        <hr class="my-4">
-
-        <h2 class="text-xl font-semibold mb-2">Claimant</h2>
-        <p><strong>Username:</strong> {{ $claim->user->username }}</p>
-        <p><strong>Email:</strong> {{ $claim->user->email }}</p>
-        <p><strong>User Unique Identifier:</strong> {{ $claim->user->id }}</p>
-
-        <hr class="my-4">
-
-        <h2 class="text-xl font-semibold mb-2">Claimed Item</h2>
-        <p><strong>Name:</strong> {{ $claim->item->name }}</p>
-        <p><strong>Description:</strong> {{ $claim->item->description ?? 'N/A' }}</p>
-        <p><strong>Item Unique Identifier:</strong> {{ $claim->item->id }}</p>
-
         @if ($claim->lostItem)
             <hr class="my-4">
-
             <h2 class="text-xl font-semibold mb-2">Linked Lost Report</h2>
             <p><strong>Name:</strong> {{ $claim->lostItem->name }}</p>
             <p><strong>Description:</strong> {{ $claim->lostItem->description ?? 'N/A' }}</p>

@@ -82,6 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/claims/create', [ClaimController::class, 'create'])->name('claims.create');
     Route::post('/claims/{item}', [ClaimController::class, 'store'])->name('claims.store');
     Route::get('/my-claims', [ClaimController::class, 'myClaims'])->name('claims.my');
+    Route::delete('/my-claims/{claim}', [ClaimController::class, 'destroy'])->name('claims.destroy');
 });
 
 Route::match(['get', 'post'], '/my-claims/{id}/appeal', [ClaimController::class, 'appeal'])

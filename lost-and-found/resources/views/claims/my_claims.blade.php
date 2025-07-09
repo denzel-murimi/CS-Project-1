@@ -45,7 +45,7 @@
                                     @if($claim->status === 'pending')
                                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
                                     @elseif($claim->status === 'approved')
-                                        @if(optional($claim->item)->status === 'returned')
+                                        @if(optional($claim->item)->status === 'returned' || $claim->returned_at)
                                             <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Returned</span>
                                         @else
                                             <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
@@ -70,6 +70,14 @@
                                     @else
                                         <span class="text-xs text-gray-500">Max appeals reached</span>
                                     @endif
+                                @elseif($claim->status === 'approved' && optional($claim->item)->status === 'returned')
+                                    <form action="{{ route('claims.destroy', $claim->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this claim?');" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                            Delete
+                                        </button>
+                                    </form>
                                 @else
                                     <span class="text-xs text-gray-500">—</span>
                                 @endif

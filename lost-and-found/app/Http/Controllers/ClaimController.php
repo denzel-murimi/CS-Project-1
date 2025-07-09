@@ -92,4 +92,19 @@ class ClaimController extends Controller
 
         return redirect()->route('claims.my')->with('success', 'Your appeal has been submitted.');
     }
+
+    public function destroy($id)
+    {
+        $claim = Claim::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        // Only allow delete if claim is approved and item is returned
+        if ($claim->status === 'approved' && optional($claim->item)->status === 'returned') {
+            $claim->delete();
+            return redirect()->route('claims.my')->with('success', 'Claim deleted successfully.');
+        }
+
+        return redirect()->route('claims.my')->with('error', 'You can only delete claims that are approved and returned.');
+    }
 }
