@@ -24,10 +24,24 @@
         <div class="flex justify-between items-center h-16">
 
             {{-- Left: Logo & Title --}}
-            <div class="flex items-center space-x-3">
-                <img class="h-10 w-auto" src="{{ asset('images/strathmore-logo.png') }}" alt="Strathmore University">
-                <h1 class="text-xl font-semibold text-white">Lost & Found</h1>
-            </div>
+            <a href="{{ route('home') }}" class="flex items-center space-x-3 group focus:outline-none">
+                <img class="h-10 w-auto transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110 animate-bounce-slow" src="{{ asset('images/strathmore-logo.png') }}" alt="Strathmore University">
+                <h1 class="text-xl font-extrabold text-white tracking-wide transition-colors duration-300 group-hover:text-yellow-300 animate-pulse-slow">
+                    Lost & Found
+                </h1>
+            </a>
+<style>
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-bounce-slow { animation: bounce-slow 2.5s infinite; }
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.animate-pulse-slow { animation: pulse-slow 2.5s infinite; }
+</style>
 
             {{-- Center: Navigation Links --}}
             <div class="hidden md:flex items-center space-x-4">

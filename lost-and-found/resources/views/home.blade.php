@@ -3,8 +3,8 @@
 @section('content')
 <div class="min-h-screen">
     {{-- Hero Section --}}
-    <section class="w-full bg-gradient-to-r from-blue-700 to-blue-500 py-16 shadow-xl">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+    <section class="w-full bg-blue-700 py-16 shadow-xl">
+        <div class="w-full px-4 sm:px-6 text-center">
             <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 drop-shadow-lg tracking-tight leading-tight">
                 Welcome to Strathmore University's Lost & Found
             </h1>
@@ -14,15 +14,15 @@
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
                 <a href="{{ route('items.lost.create') }}"
-                   class="bg-white text-blue-700 font-semibold px-8 py-3 rounded-full shadow-lg border-2 border-blue-700 hover:bg-blue-50 hover:scale-105 hover:border-blue-900 transition-all duration-200">
+                   class="bg-blue-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-blue-600 hover:scale-105 transition-all duration-200">
                     Report Lost Item
                 </a>
                 <a href="{{ route('items.found.create') }}"
-                   class="bg-blue-900 text-white font-semibold px-8 py-3 rounded-full shadow-lg border-2 border-blue-900 hover:bg-blue-800 hover:scale-105 transition-all duration-200">
+                   class="bg-green-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-green-600 hover:scale-105 transition-all duration-200">
                     Add Found Item
                 </a>
                 <a href="#itemsContainer"
-                   class="bg-gradient-to-r from-blue-400 to-blue-700 text-white font-semibold px-8 py-3 rounded-full shadow-lg border-2 border-blue-700 hover:from-blue-500 hover:to-blue-900 hover:scale-105 transition-all duration-200">
+                   class="bg-yellow-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-yellow-600 hover:scale-105 transition-all duration-200">
                     Browse Items
                 </a>
             </div>
@@ -30,14 +30,14 @@
     </section>
 
     {{-- Search Section --}}
-    <div class="max-w-6xl mx-auto mt-10 px-4 md:px-6">
+    <div class="w-full mt-10 px-4 md:px-10">
         <input type="text"
                id="searchInput"
                placeholder="🔍 Search for lost or found items..."
                class="w-full border-2 border-blue-400 focus:border-blue-600 p-4 rounded-xl mb-10 shadow transition duration-200 text-lg" />
     </div>
 
-    <div class="max-w-6xl mx-auto px-4 md:px-6 flex flex-col lg:flex-row gap-8">
+    <div class="w-full flex flex-col lg:flex-row gap-8 px-4 md:px-10">
         {{-- Sidebar Filters --}}
         <div class="w-full lg:w-1/4 mb-8 lg:mb-0">
             {{-- Type Filter --}}
