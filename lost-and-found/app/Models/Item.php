@@ -18,7 +18,7 @@ class Item extends Model
         'location',
         'date_lost_found',
         'type', // 'lost' or 'found'
-        'status', // 'active', 'returned', 'claimed'
+        'status', // 'active', 'returned', 'claimed','inactive'
         'contact_info',
         'image_path',
         'reward_offered',

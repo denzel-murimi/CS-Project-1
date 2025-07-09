@@ -89,8 +89,8 @@
                     </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Available</p>
-                    <p class="text-2xl font-semibold text-gray-900">{{ $items->where('status', 'available')->count() }}</p>
+                    <p class="text-sm font-medium text-gray-600">Active</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ $items->where('status', 'active')->count() }}</p>
                 </div>
             </div>
         </div>
@@ -121,8 +121,8 @@
                     </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600">Inactive</p>
-                    <p class="text-2xl font-semibold text-gray-900">{{ $items->where('status', 'inactive')->count() }}</p>
+                    <p class="text-sm font-medium text-gray-600">Returned</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ $items->where('status', 'returned')->count() }}</p>
                 </div>
             </div>
         </div>
@@ -151,8 +151,9 @@
                 </select>
                 <select class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
                     <option value="">All Status</option>
-                    <option value="available">Available</option>
+                    <option value="active">Active</option>
                     <option value="claimed">Claimed</option>
+                    <option value="returned">Returned</option>
                     <option value="inactive">Inactive</option>
                 </select>
             </div>
@@ -235,12 +236,12 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($item->status === 'available')
+                                    @if($item->status === 'active')
                                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
                                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                             </svg>
-                                            Available
+                                            Active
                                         </span>
                                     @elseif($item->status === 'claimed')
                                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
@@ -249,10 +250,17 @@
                                             </svg>
                                             Claimed
                                         </span>
-                                    @elseif($item->status === 'inactive')
+                                    @elseif($item->status === 'returned')
                                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
                                             <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L5.636 5.636"></path>
+                                            </svg>
+                                            Returned
+                                        </span>
+                                    @elseif($item->status === 'inactive')
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                             Inactive
                                         </span>

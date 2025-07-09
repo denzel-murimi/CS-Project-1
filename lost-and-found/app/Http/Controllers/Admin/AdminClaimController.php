@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Claim;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -63,6 +64,11 @@ class AdminClaimController extends Controller
 
             if ($otherApproved) {
                 return redirect()->back()->with('error', 'Another claim for this item is already approved.');
+            }
+            // Mark the item as inactive so it can't be claimed again
+            if ($claim->item) {
+                $claim->item->status = 'inactive';
+                $claim->item->save();
             }
         }
 
