@@ -27,14 +27,12 @@ class AdminItemController extends Controller
             });
         }
 
-        // Filter by type
-        if ($request->filled('type')) {
-            $query->where('type', $request->input('type'));
-        }
-
-        // Filter by status
+        // Filter by status (only allow 'claimed' or 'active')
         if ($request->filled('status')) {
-            $query->where('status', $request->input('status'));
+            $status = $request->input('status');
+            if (in_array($status, ['claimed', 'active'])) {
+                $query->where('status', $status);
+            }
         }
 
         $items = $query->latest()->get();
