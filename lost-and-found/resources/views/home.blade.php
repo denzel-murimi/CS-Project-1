@@ -5,7 +5,7 @@
     {{-- Hero Section --}}
     <section class="w-full relative py-16 shadow-xl overflow-hidden">
         <img src="{{ asset('images/lost.jpg') }}" alt="Lost and Found" class="absolute inset-0 w-full h-full object-cover object-center z-0" style="min-height:100%; min-width:100%;">
-        <div class="absolute inset-0 bg-blue-800 bg-opacity-70 z-10"></div>
+
         <div class="relative w-full px-4 sm:px-6 text-center z-20">
             <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 drop-shadow-lg tracking-tight leading-tight">
                 Welcome to Strathmore University's Lost & Found
@@ -36,7 +36,7 @@
         <input type="text"
                id="searchInput"
                placeholder="🔍 Search for lost or found items..."
-               class="w-full border-2 border-blue-400 focus:border-blue-600 p-4 rounded-xl mb-10 shadow transition duration-200 text-lg" />
+               class="w-full border-1 border-black-400 focus:border-blue-600 p-4 rounded-full mb-10 shadow transition duration-200 text-lg" />
     </div>
 
     <div class="w-full flex flex-col lg:flex-row gap-8 px-4 md:px-10">
