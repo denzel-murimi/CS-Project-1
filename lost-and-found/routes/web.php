@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-claims', [ClaimController::class, 'myClaims'])->name('claims.my');
 });
 
-Route::post('/my-claims/{id}/appeal', [ClaimController::class, 'appeal'])
+Route::match(['get', 'post'], '/my-claims/{id}/appeal', [ClaimController::class, 'appeal'])
     ->middleware('auth')
     ->name('claims.appeal');
 

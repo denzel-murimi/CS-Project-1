@@ -71,8 +71,23 @@ class ClaimController extends Controller
             return redirect()->route('claims.my')->with('error', 'You have reached the maximum number of appeals.');
         }
 
+        // If GET, show the appeal form
+        if ($request->isMethod('get')) {
+            return view('claims.appeal', compact('claim'));
+        }
+
+        // If POST, process the appeal
+        $validated = $request->validate([
+            'appeal_message' => 'required|string|max:2000',
+            'appeal_photo' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+        ]);
         $claim->status = 'pending';
         $claim->appeal_count += 1;
+        $claim->appeal_message = $request->appeal_message;
+        if ($request->hasFile('appeal_photo')) {
+            $photoPath = $request->file('appeal_photo')->store('claims/appeals', 'public');
+            $claim->photo_path = $photoPath;
+        }
         $claim->save();
 
         return redirect()->route('claims.my')->with('success', 'Your appeal has been submitted.');

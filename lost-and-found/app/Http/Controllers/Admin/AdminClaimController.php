@@ -22,6 +22,11 @@ class AdminClaimController extends Controller
             $query->where('status', $request->status);
         }
 
+        // Appeals tab: filter for claims with at least one appeal
+        if ($request->has('appeals')) {
+            $query->where('appeal_count', '>', 0);
+        }
+
         $claims = $query->latest()->get();
 
         return view('admin.claims.index', compact('claims'));

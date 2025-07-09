@@ -135,6 +135,10 @@
                    class="{{ request('status') == 'rejected' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
                     Rejected ({{ $claims->where('status', 'rejected')->count() }})
                 </a>
+                <a href="{{ route('admin.claims.index', ['appeals' => 1]) }}"
+                   class="{{ request('appeals') ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm">
+                    Appeals ({{ $claims->where('appeal_count', '>', 0)->count() }})
+                </a>
             </nav>
         </div>
     </div>
@@ -175,8 +179,18 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $claim->item->name }}</div>
-                                    <div class="text-sm text-gray-500">{{ $claim->item->description ?? 'No description' }}</div>
+                                    <div class="text-sm text-gray-900">
+                                        {{ $claim->item ? $claim->item->name : 'Item not found' }}
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        {{ $claim->item && $claim->item->description ? $claim->item->description : 'No description' }}
+                                    </div>
+                                    @if($claim->appeal_count > 0 && $claim->appeal_message)
+                                        <div class="mt-2 p-2 bg-yellow-50 border-l-4 border-yellow-400">
+                                            <span class="font-semibold text-yellow-700">Appeal:</span>
+                                            <span class="text-yellow-800">{{ $claim->appeal_message }}</span>
+                                        </div>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($claim->status === 'pending')

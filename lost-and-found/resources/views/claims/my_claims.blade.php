@@ -56,12 +56,10 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 @if($claim->status === 'rejected')
                                     @if($claim->appeal_count < 2)
-                                        <form action="{{ route('claims.appeal', $claim->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-xs leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                Appeal
-                                            </button>
-                                        </form>
+                                        <a href="{{ route('claims.appeal', $claim->id) }}"
+                                           class="inline-flex items-center px-3 py-2 border border-transparent text-xs leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Appeal
+                                        </a>
                                         <span class="text-xs text-gray-500 ml-2">
                                             (Appeals left: {{ 2 - $claim->appeal_count }})
                                         </span>

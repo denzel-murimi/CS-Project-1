@@ -17,6 +17,7 @@ class Claim extends Model
         'status',
         'appeal_count',
         'photo_path',
+        'appeal_message',
     ];
 
     /**
