@@ -72,4 +72,7 @@ class AdminItemController extends Controller
         return redirect()->route('admin.items.index')
             ->with('success', 'Item deleted successfully.');
     }
+
+
+
 }

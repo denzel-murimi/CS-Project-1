@@ -110,6 +110,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/claims', [AdminClaimController::class, 'index'])->name('claims.index');
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
+
+    Route::post('/admin/items/{item}/claim', [AdminItemController::class, 'markAsClaimed'])
+    ->name('admin.items.claim');
 });
 
 // -------------------------
@@ -130,4 +133,6 @@ Route::middleware(['auth'])->prefix('admin/station')->name('admin.station.')->gr
         Route::post('/scan', [StationController::class, 'processScan'])->name('processScan');
         Route::post('/return-item/{claim}', [StationController::class, 'markReturned'])->name('returnItem');
     });
+
+
 });
