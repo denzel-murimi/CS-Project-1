@@ -4,6 +4,15 @@
 
 @section('content')
 <div class="max-w-3xl mx-auto mt-10">
+    <div class="mb-2">
+        <span class="font-bold text-lg">
+            @if($item->type === 'lost')
+                LOST ITEM
+            @else
+                FOUND ITEM
+            @endif
+        </span>
+    </div>
     <h1 class="text-3xl font-bold mb-4">{{ $item->name }}</h1>
 
     <div class="bg-white shadow rounded p-6 mb-6">
@@ -36,20 +45,6 @@
         @endauth
 
     </div>
-
-    @if ($potentialMatches->count())
-        <div class="bg-gray-100 rounded p-4 mb-6">
-            <h2 class="text-xl font-bold mb-3">Potential Matches</h2>
-            @foreach ($potentialMatches as $match)
-                <div class="mb-2">
-                    <a href="{{ route('items.show', $match) }}" class="text-blue-600 hover:underline">
-                        {{ $match->name }}
-                    </a>
-                    <span class="text-gray-600">- {{ $match->location }} - {{ $match->created_at->diffForHumans() }}</span>
-                </div>
-            @endforeach
-        </div>
-    @endif
 
     {{-- If this is a lost item, show FOUND button --}}
     @if ($item->isLost())
