@@ -3,8 +3,10 @@
 @section('content')
 <div class="min-h-screen">
     {{-- Hero Section --}}
-    <section class="w-full bg-blue-700 py-16 shadow-xl">
-        <div class="w-full px-4 sm:px-6 text-center">
+    <section class="w-full relative py-16 shadow-xl overflow-hidden">
+        <img src="{{ asset('images/lost.jpg') }}" alt="Lost and Found" class="absolute inset-0 w-full h-full object-cover object-center z-0" style="min-height:100%; min-width:100%;">
+        <div class="absolute inset-0 bg-blue-800 bg-opacity-70 z-10"></div>
+        <div class="relative w-full px-4 sm:px-6 text-center z-20">
             <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 drop-shadow-lg tracking-tight leading-tight">
                 Welcome to Strathmore University's Lost & Found
             </h1>
