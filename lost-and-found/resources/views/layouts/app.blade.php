@@ -66,6 +66,15 @@
                 @endguest
 
                 @auth
+                    <a href="{{ route('notifications.index') }}" class="relative text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
+                        Notifications
+                        @php
+                            $unread = \App\Models\Notification::where('user_id', auth()->id())->where('read', false)->count();
+                        @endphp
+                        @if($unread > 0)
+                            <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">{{ $unread }}</span>
+                        @endif
+                    </a>
                     <div class="relative">
                         <button class="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-white" id="user-menu-button">
                             <span class="sr-only">Open user menu</span>

@@ -135,6 +135,26 @@ class ItemController extends Controller
 
         $item = Item::create($validated);
 
+        // --- FOUND/LOST MATCHING AND NOTIFICATION LOGIC ---
+        // Try to find a matching found item (by name, status active)
+        $foundItem = Item::where('type', 'found')
+            ->where('name', $item->name)
+            ->where('status', 'active')
+            ->first();
+        if ($foundItem) {
+            // Mark both as inactive
+            $item->status = 'inactive';
+            $item->save();
+            $foundItem->status = 'inactive';
+            $foundItem->save();
+            // Send notification to the found item's user
+            \App\Models\Notification::create([
+                'user_id' => $foundItem->user_id,
+                'action_url' => url('/items/confirm-lost/' . $item->id),
+            ]);
+        }
+        // --- END MATCHING LOGIC ---
+
         return redirect()->route('items.show', $item)
             ->with('success', 'Lost item reported successfully! We\'ll notify you if someone finds a match.');
     }
@@ -165,6 +185,27 @@ class ItemController extends Controller
         $validated['unique_identifiers'] = $request->input('unique_identifiers');
 
         $item = Item::create($validated);
+
+        // --- LOST/FOUND MATCHING AND NOTIFICATION LOGIC ---
+        // Try to find a matching lost item (by name, status active)
+        $lostItem = Item::where('type', 'lost')
+            ->where('name', $item->name)
+            ->where('status', 'active')
+            ->first();
+        if ($lostItem) {
+            // Mark both as inactive
+            $item->status = 'inactive';
+            $item->save();
+            $lostItem->status = 'inactive';
+            $lostItem->save();
+            // Send notification to the lost item's user
+            \App\Models\Notification::create([
+                'user_id' => $lostItem->user_id,
+                'action_url' => url('/notifications/verify-found/' . $item->id),
+                'message' => 'Someone has reported finding an item matching your lost report. Please verify if it is yours.',
+            ]);
+        }
+        // --- END MATCHING LOGIC ---
 
         return redirect()->route('items.show', $item)
             ->with('success', 'Found item reported successfully! The owner can now contact you to claim it.');

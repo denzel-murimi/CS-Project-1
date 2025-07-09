@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Claim;
 use App\Models\Item;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -74,6 +75,23 @@ class AdminClaimController extends Controller
 
         $claim->status = $validated['status'];
         $claim->save();
+
+        // If this is a found item being approved, notify the user who reported it lost
+        if ($claim->item && $claim->item->type === 'found' && $validated['status'] === 'approved') {
+            $lostReport = Item::where('type', 'lost')
+                ->where('name', $claim->item->name)
+                ->where('status', 'active')
+                ->first();
+            if ($lostReport) {
+                $lostReport->status = 'inactive';
+                $lostReport->save();
+                Notification::create([
+                    'user_id' => $lostReport->user_id,
+                    'message' => 'A found item matching your lost report has been approved. Is this your item?',
+                    'action_url' => url('/items/confirm/' . $claim->item->id),
+                ]);
+            }
+        }
 
         return redirect()->route('admin.claims.index')->with('success', 'Claim status updated successfully.');
     }

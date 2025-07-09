@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\AdminClaimController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\StationController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -135,4 +136,23 @@ Route::middleware(['auth'])->prefix('admin/station')->name('admin.station.')->gr
     });
 
 
+});
+
+// -------------------------
+// Notification routes
+// -------------------------
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'delete'])->name('notifications.delete');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+    Route::delete('/notifications/clear-all', [NotificationController::class, 'clearAll'])->name('notifications.clear-all');
+    Route::get('/items/confirm/{itemId}', [NotificationController::class, 'confirmFoundItem'])->name('notifications.confirmFoundItem');
+    Route::get('/items/reject/{itemId}', [NotificationController::class, 'rejectFoundItem'])->name('notifications.rejectFoundItem');
+
+    // Notification workflow for found item verification
+    Route::get('/notifications/verify-found/{foundItemId}', [NotificationController::class, 'verifyFound'])->name('notifications.verifyFound');
+    Route::post('/notifications/confirm-found-match/{foundItemId}', [NotificationController::class, 'confirmFoundMatch'])->name('notifications.confirmFoundMatch');
+    Route::post('/notifications/reject-found-match/{foundItemId}', [NotificationController::class, 'rejectFoundMatch'])->name('notifications.rejectFoundMatch');
 });
