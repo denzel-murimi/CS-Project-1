@@ -64,6 +64,7 @@ class AdminItemController extends Controller
 
     public function show(Item $item)
     {
+        $item->load('user');
         return view('admin.items.show', compact('item'));
     }
 
