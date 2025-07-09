@@ -70,8 +70,7 @@
                                     @else
                                         <span class="text-xs text-gray-500">Max appeals reached</span>
                                     @endif
-                                @elseif($claim->status === 'approved' && optional($claim->item)->status === 'returned')
-                                    <form action="{{ route('claims.destroy', $claim->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this claim?');" style="display:inline;">
+                                    <form action="{{ route('claims.destroy', $claim->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this claim?');" style="display:inline; margin-left: 8px;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
@@ -79,7 +78,13 @@
                                         </button>
                                     </form>
                                 @else
-                                    <span class="text-xs text-gray-500">—</span>
+                                    <form action="{{ route('claims.destroy', $claim->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this claim?');" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="inline-flex items-center px-3 py-2 border border-transparent text-xs leading-4 font-medium rounded-full text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                            Delete
+                                        </button>
+                                    </form>
                                 @endif
                             </td>
                         </tr>
