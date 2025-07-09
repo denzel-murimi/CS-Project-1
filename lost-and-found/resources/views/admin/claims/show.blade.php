@@ -48,9 +48,21 @@
             <div class="mt-4">
                 <h3 class="text-xl font-semibold mb-2">Uploaded Photo</h3>
                 <img src="{{ asset('storage/' . $claim->photo_path) }}"
-                    alt="Claim Photo"
-                    class="w-48 rounded border border-gray-300">
+                    alt="Claim/Appeal Photo"
+                    class="w-48 rounded border border-gray-300 mb-2">
             </div>
+        @endif
+
+        @if ($claim->appeal_count > 0)
+            <hr class="my-4">
+            <h2 class="text-xl font-semibold mb-2">Appeal Details</h2>
+            <p><strong>Appeal Message:</strong> {{ $claim->appeal_message ?? 'N/A' }}</p>
+            @if ($claim->photo_path)
+                <div class="mt-2">
+                    <strong>Appeal Photo:</strong><br>
+                    <img src="{{ asset('storage/' . $claim->photo_path) }}" alt="Appeal Photo" class="w-48 rounded border border-gray-300">
+                </div>
+            @endif
         @endif
 
         <p><strong>Date Submitted:</strong> {{ $claim->created_at->format('d M Y') }}</p>

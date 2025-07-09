@@ -31,6 +31,15 @@
             @enderror
         </div>
 
+
+        <div class="mb-4">
+            <label class="block mb-1">Student ID Number</label>
+            <input type="text" name="student_id" class="w-full border rounded p-2" value="{{ old('student_id') }}" required>
+            @error('student_id')
+                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
         <div class="mb-4">
             <label class="block mb-1">Email</label>
             <input type="email" name="email" class="w-full border rounded p-2" value="{{ old('email') }}" required>
