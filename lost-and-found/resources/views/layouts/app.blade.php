@@ -25,17 +25,12 @@
 
             {{-- Left: Logo & Title --}}
             <a href="{{ route('home') }}" class="flex items-center space-x-3 group focus:outline-none">
-                <img class="h-10 w-auto transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110 animate-bounce-slow" src="{{ asset('images/strathmore-logo.png') }}" alt="Strathmore University">
+                <img class="h-10 w-auto transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" src="{{ asset('images/strathmore-logo.png') }}" alt="Strathmore University">
                 <h1 class="text-xl font-extrabold text-white tracking-wide transition-colors duration-300 group-hover:text-yellow-300 animate-pulse-slow">
                     Lost & Found
                 </h1>
             </a>
 <style>
-@keyframes bounce-slow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-.animate-bounce-slow { animation: bounce-slow 2.5s infinite; }
 @keyframes pulse-slow {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.7; }
@@ -62,12 +57,109 @@
                 </a>
                 @auth
                     @if(auth()->user()->isAdmin())
-                        <a href="{{ route('admin.station.scan') }}" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
-                            Station Scanner
-                        </a>
-                        <a href="{{ route('admin.dashboard') }}" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium">
-                            Admin Panel
-                        </a>
+                        <div class="relative" id="admin-dropdown-container">
+                            <button type="button" class="text-gray-300 hover:text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1 focus:outline-none focus:bg-blue-700 transition-colors duration-200" id="admin-dropdown-btn">
+                                Admin Functions
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div id="admin-dropdown" class="hidden absolute right-0 mt-2 min-w-[10rem] rounded-md shadow bg-blue-800 z-50 transition-all duration-150 border border-blue-700">
+                                <a href="{{ route('admin.station.scan') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-700 hover:text-yellow-300 rounded-t-md transition">Station Scanner</a>
+                                <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-700 hover:text-yellow-300 rounded-b-md transition">Admin Panel</a>
+                            </div>
+                        </div>
+</style>
+<script>
+// Improved admin dropdown: stays open for 1.5s minimum, stays open on hover/focus, closes on click outside
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('admin-dropdown-btn');
+    const menu = document.getElementById('admin-dropdown');
+    const container = document.getElementById('admin-dropdown-container');
+    let dropdownTimeout;
+    let isMenuOpen = false;
+    let lastOpenTime = 0;
+    const MINIMUM_OPEN_TIME = 1500; // 1.5 seconds
+    
+    if (btn && menu && container) {
+        function showMenu() {
+            clearTimeout(dropdownTimeout);
+            if (!isMenuOpen) {
+                menu.classList.remove('hidden');
+                isMenuOpen = true;
+                lastOpenTime = Date.now();
+            }
+        }
+        
+        function hideMenu() {
+            if (isMenuOpen) {
+                const timeOpen = Date.now() - lastOpenTime;
+                const remainingTime = Math.max(0, MINIMUM_OPEN_TIME - timeOpen);
+                
+                dropdownTimeout = setTimeout(() => {
+                    menu.classList.add('hidden');
+                    isMenuOpen = false;
+                }, remainingTime);
+            }
+        }
+        
+        function cancelHide() {
+            clearTimeout(dropdownTimeout);
+        }
+        
+        // Show menu on button hover/focus
+        btn.addEventListener('mouseenter', showMenu);
+        btn.addEventListener('focus', showMenu);
+        
+        // Cancel hide when hovering over button
+        btn.addEventListener('mouseenter', cancelHide);
+        
+        // Hide menu when leaving button (with delay)
+        btn.addEventListener('mouseleave', hideMenu);
+        btn.addEventListener('blur', hideMenu);
+        
+        // Keep menu open when hovering over it
+        menu.addEventListener('mouseenter', cancelHide);
+        
+        // Hide menu when leaving the menu
+        menu.addEventListener('mouseleave', hideMenu);
+        
+        // Keep menu open when hovering anywhere in the container
+        container.addEventListener('mouseenter', cancelHide);
+        
+        // Hide menu when leaving the entire container
+        container.addEventListener('mouseleave', hideMenu);
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!container.contains(e.target)) {
+                clearTimeout(dropdownTimeout);
+                menu.classList.add('hidden');
+                isMenuOpen = false;
+            }
+        });
+        
+        // Close menu when clicking on a menu item
+        const menuItems = menu.querySelectorAll('a');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                clearTimeout(dropdownTimeout);
+                menu.classList.add('hidden');
+                isMenuOpen = false;
+            });
+        });
+        
+        // Optional: Close menu on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMenuOpen) {
+                clearTimeout(dropdownTimeout);
+                menu.classList.add('hidden');
+                isMenuOpen = false;
+            }
+        });
+    }
+});
+</script>
                     @endif
                 @endauth
             </div>

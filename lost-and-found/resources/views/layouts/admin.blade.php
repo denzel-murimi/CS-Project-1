@@ -6,7 +6,7 @@
     <title>@yield('title', 'Admin Panel')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gradient-to-br from-blue-100 via-white to-blue-200 flex flex-col min-h-screen m-0 p-0">
     <nav class="bg-blue-800 p-4 text-white">
         <div class="container mx-auto flex justify-between">
             <h1 class="text-xl font-bold">Admin Panel</h1>
