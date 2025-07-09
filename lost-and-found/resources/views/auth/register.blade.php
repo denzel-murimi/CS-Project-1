@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-200 py-8">
-    <div class="bg-white shadow-2xl rounded-3xl p-10 max-w-md w-full border-2 border-blue-100">
+    <div class="bg-white shadow-2xl rounded-3xl p-10 max-w-md w-full">
         <div class="flex flex-col items-center mb-6">
             <svg class="w-16 h-16 text-blue-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />

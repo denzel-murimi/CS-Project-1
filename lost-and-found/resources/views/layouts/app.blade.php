@@ -16,7 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="bg-gray-50 flex flex-col min-h-screen">
+<body class="bg-gradient-to-br from-blue-100 via-white to-blue-200 flex flex-col min-h-screen m-0 p-0">
     <!-- Navigation -->
     <!-- Navigation -->
 <nav class="bg-blue-800 shadow-lg">
